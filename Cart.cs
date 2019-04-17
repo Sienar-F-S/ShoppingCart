@@ -18,8 +18,6 @@ namespace ShoppingCart {
 			foreach (string item in items.Split(",")) {
 				AddItemToCart(item.Trim().ToLower());
 			}
-
-			PrintCart();
 		}
 
 		// Adds an available item to the cart
@@ -34,6 +32,19 @@ namespace ShoppingCart {
 			foreach (var item in _scannedItems.Keys) {
 				Console.WriteLine($"{item}: {_scannedItems[item] }. Price: {_scannedItems[item] * Stock.allStock[item]}");
 			}
+
+			Console.WriteLine($"Total Price: {CalculatedTotalPrice()}");
+		}
+
+		// Returns total price of cart
+		private decimal CalculatedTotalPrice() {
+			decimal tmp = 0m;
+
+			foreach (var item in _scannedItems.Keys) {
+				tmp =+ _scannedItems[item] * Stock.allStock[item];
+			}
+
+			return tmp;
 		}
 	}
 }

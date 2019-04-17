@@ -19,6 +19,8 @@ namespace ShoppingCart
 			} else {
 				cart.ScanItems("Apple, Apple, Orange, Apple");
 			}
+
+			cart.PrintCart();
 		}
     }
 }

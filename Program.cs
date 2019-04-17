@@ -22,5 +22,5 @@ namespace ShoppingCart
 
 			cart.PrintCart();
 		}
-    }
+	}
 }

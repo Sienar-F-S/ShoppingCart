@@ -18,6 +18,29 @@ namespace ShoppingCart {
 			{"apple", "BuyOneGetOneFree"},
 			{"orange", "ThreeForTwo"}
 		};
+
+		// Check if offer for item is aviable and returns no of reduced item.
+		public static int CheckOffer(string item, int totalItems) {
+			if (!offerForItem.ContainsKey(item))
+				return 0;
+
+			switch (offerForItem[item]) {
+				case "BuyOneGetOneFree":
+					return BuyOneGetOneFree(totalItems);
+				case "ThreeForTwo":
+					return ThreeForTwo(totalItems);
+				default:
+					return 0;
+			}
+		}
+
+		static int BuyOneGetOneFree(int totalItems) {
+			return (totalItems / 2);
+		}
+
+		static int ThreeForTwo(int totalItems) {
+			return (totalItems / 3);
+		}
 	}
 
 	class Cart {
@@ -42,7 +65,7 @@ namespace ShoppingCart {
 			foreach (var item in _scannedItems.Keys) {
 				Console.WriteLine($"{item}: {_scannedItems[item] }. Price: {_scannedItems[item] * StockPrice.allStock[item]}");
 			}
-
+			Console.WriteLine($"Total Savings Today: {CalculateTotalSavings()}");
 			Console.WriteLine($"Total Price: {CalculatedTotalPrice()}");
 		}
 
@@ -51,7 +74,17 @@ namespace ShoppingCart {
 			decimal tmp = 0m;
 
 			foreach (var item in _scannedItems.Keys) {
-				tmp =+ _scannedItems[item] * StockPrice.allStock[item];
+				tmp += (_scannedItems[item] - SimpleOffer.CheckOffer(item, _scannedItems[item])) * StockPrice.allStock[item];
+			}
+
+			return tmp;
+		}
+
+		private decimal CalculateTotalSavings() {
+			decimal tmp = 0m;
+
+			foreach (var item in _scannedItems.Keys) {
+				tmp += SimpleOffer.CheckOffer(item, _scannedItems[item]) * StockPrice.allStock[item];
 			}
 
 			return tmp;

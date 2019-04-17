@@ -3,10 +3,20 @@ using System.Collections.Generic;
 
 // Cart to track customers shopping list
 namespace ShoppingCart {
-	static class Stock {
+
+	// Price for each item in stock
+	static class StockPrice {
 		public static Dictionary<string, decimal> allStock = new Dictionary<string, decimal> {
 			{"apple", 0.60m},
 			{"orange", 0.25m}
+		};
+	}
+
+	// Special offer for item. 
+	static class SimpleOffer {
+		public static Dictionary<string, string> offerForItem = new Dictionary<string, string> {
+			{"apple", "BuyOneGetOneFree"},
+			{"orange", "ThreeForTwo"}
 		};
 	}
 
@@ -22,7 +32,7 @@ namespace ShoppingCart {
 
 		// Adds an available item to the cart
 		private void AddItemToCart(string item) {
-			if (!Stock.allStock.ContainsKey(item))
+			if (!StockPrice.allStock.ContainsKey(item))
 				return;
 
 			_scannedItems[item] = _scannedItems.ContainsKey(item) ? _scannedItems[item] + 1 : 1;
@@ -30,7 +40,7 @@ namespace ShoppingCart {
 
 		public void PrintCart() {
 			foreach (var item in _scannedItems.Keys) {
-				Console.WriteLine($"{item}: {_scannedItems[item] }. Price: {_scannedItems[item] * Stock.allStock[item]}");
+				Console.WriteLine($"{item}: {_scannedItems[item] }. Price: {_scannedItems[item] * StockPrice.allStock[item]}");
 			}
 
 			Console.WriteLine($"Total Price: {CalculatedTotalPrice()}");
@@ -41,7 +51,7 @@ namespace ShoppingCart {
 			decimal tmp = 0m;
 
 			foreach (var item in _scannedItems.Keys) {
-				tmp =+ _scannedItems[item] * Stock.allStock[item];
+				tmp =+ _scannedItems[item] * StockPrice.allStock[item];
 			}
 
 			return tmp;
